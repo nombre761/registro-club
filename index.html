@@ -21,13 +21,12 @@
 </form>
 
 <script>
-  // Pega aquí la URL de tu Web App de Google Apps Script
-  const URL = "https://script.google.com/macros/s/AKfycbwTxzzliMZYqZ1NQ3CPOnum8LWOXCLh5rZ7AtXvW1i7sykd_mNWJpEjlx85slIj_BKi/exec";
+  // URL de tu Web App de Google Apps Script
+  const URL = "https://script.google.com/macros/s/AKfycbyI9Pbh9OAZa9fkVQCDaB-yhZkDN51rCC8056mJHMY8oY6HhIuKzBlpMol4RCoF-YBb/exec";
 
   document.getElementById("form").addEventListener("submit", function(e) {
     e.preventDefault();
 
-    // Obtener los valores del formulario
     const datos = {
       nombre: document.getElementById("nombre").value,
       matricula: document.getElementById("matricula").value,
@@ -35,7 +34,6 @@
       semestre: document.getElementById("semestre").value
     };
 
-    // Enviar los datos a Google Sheets usando fetch y JSON
     fetch(URL, {
       method: "POST",
       body: JSON.stringify(datos)
@@ -54,4 +52,3 @@
 
 </body>
 </html>
-
