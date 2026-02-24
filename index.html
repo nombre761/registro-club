@@ -21,7 +21,6 @@
 </form>
 
 <script>
-  // URL de tu Web App de Google Apps Script
   const URL = "https://script.google.com/macros/s/AKfycbyI9Pbh9OAZa9fkVQCDaB-yhZkDN51rCC8056mJHMY8oY6HhIuKzBlpMol4RCoF-YBb/exec";
 
   document.getElementById("form").addEventListener("submit", function(e) {
@@ -36,6 +35,9 @@
 
     fetch(URL, {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json"  // <-- MUY IMPORTANTE
+      },
       body: JSON.stringify(datos)
     })
     .then(response => response.text())
