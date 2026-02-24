@@ -1,33 +1,46 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Registro del Club</title>
+  <style>
+    /* Un poco de estilo para que no se vea tan simple */
+    body { font-family: sans-serif; display: flex; justify-content: center; padding: 20px; background-color: #f4f4f9; }
+    .card { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 100%; max-width: 400px; }
+    input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+    button { width: 100%; padding: 10px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
+    button:hover { background-color: #218838; }
+    #mensaje { margin-top: 15px; text-align: center; font-weight: bold; }
+  </style>
 </head>
 <body>
 
-<h2>Registro del Club</h2>
-
-<form id="formulario">
-  <input type="text" id="nombre" placeholder="Nombre" required><br><br>
-
-  <input type="number" id="matricula" placeholder="Matrícula" required><br><br>
-
-  <input type="text" id="carrera" placeholder="Carrera" required><br><br>
-
-  <input type="text" id="semestre" placeholder="Semestre" required><br><br>
-
-  <button type="submit">Enviar</button>
-</form>
-
-<p id="mensaje"></p>
+<div class="card">
+  <h2>Registro del Club</h2>
+  <form id="formulario">
+    <input type="text" id="nombre" placeholder="Nombre completo" required>
+    <input type="number" id="matricula" placeholder="Matrícula" required>
+    <input type="text" id="carrera" placeholder="Carrera" required>
+    <input type="text" id="semestre" placeholder="Semestre (ej. 4to)" required>
+    <button type="submit" id="btnEnviar">Enviar Registro</button>
+  </form>
+  <p id="mensaje"></p>
+</div>
 
 <script>
-  // URL de tu Web App (Apps Script)
-  const URL = "https://script.google.com/macros/s/AKfycbyMu4sS43_FXhmdEmv8a0obA1O7mijZz-lJ_TnNOkZAS-5sTSS7BA0YcmfDhZ1A5IyZ/exec";
+  // 1. REEMPLAZA ESTA URL con la de tu "Nueva Implementación" de Google Apps Script
+  const URL_WEB_APP = "https://script.google.com/macros/s/AKfycbyMu4sS43_FXhmdEmv8a0obA1O7mijZz-lJ_TnNOkZAS-5sTSS7BA0YcmfDhZ1A5IyZ/exec";
 
   document.getElementById("formulario").addEventListener("submit", function(e) {
     e.preventDefault();
+    
+    const btn = document.getElementById("btnEnviar");
+    const msg = document.getElementById("mensaje");
+    
+    btn.disabled = true;
+    btn.innerText = "Enviando...";
+    msg.innerHTML = "⏳ Procesando...";
 
     const datos = {
       nombre: document.getElementById("nombre").value,
@@ -36,25 +49,30 @@
       semestre: document.getElementById("semestre").value
     };
 
-    fetch(URL, {
+    // Usamos 'text/plain' y 'no-cors' para evitar errores de seguridad del navegador
+    fetch(URL_WEB_APP, {
       method: "POST",
+      mode: "no-cors", 
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "text/plain"
       },
       body: JSON.stringify(datos)
     })
-    .then(response => response.json())
-    .then(data => {
-      if (data.resultado === "ok") {
-        document.getElementById("mensaje").innerHTML = "✅ Datos guardados correctamente";
-        document.getElementById("formulario").reset();
-      } else {
-        document.getElementById("mensaje").innerHTML = "❌ Error: " + data.error;
-      }
+    .then(() => {
+      // Como usamos 'no-cors', no podemos leer la respuesta JSON del servidor,
+      // así que confirmamos que el envío salió de aquí.
+      msg.style.color = "green";
+      msg.innerHTML = "✅ ¡Registro enviado! Revisa tu Google Sheet.";
+      document.getElementById("formulario").reset();
     })
     .catch(error => {
-      document.getElementById("mensaje").innerHTML = "❌ Error de conexión";
-      console.error(error);
+      msg.style.color = "red";
+      msg.innerHTML = "❌ Error de conexión.";
+      console.error("Error:", error);
+    })
+    .finally(() => {
+      btn.disabled = false;
+      btn.innerText = "Enviar Registro";
     });
   });
 </script>
