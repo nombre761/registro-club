@@ -23,40 +23,41 @@
 <p id="mensaje"></p>
 
 <script>
+  // URL de tu Web App (Apps Script)
+  const URL = "https://script.google.com/macros/s/AKfycbyMu4sS43_FXhmdEmv8a0obA1O7mijZz-lJ_TnNOkZAS-5sTSS7BA0YcmfDhZ1A5IyZ/exec";
 
-const URL = "https://script.google.com/macros/s/AKfycbzPv4rLRD9V-8PTuFEGRFz2bw6IssDkWVKx0p-csXP6NB4IToPC48KipAqLV25p0IT7/exec";
+  document.getElementById("formulario").addEventListener("submit", function(e) {
+    e.preventDefault();
 
-document.getElementById("formulario").addEventListener("submit", function(e) {
-  e.preventDefault();
+    const datos = {
+      nombre: document.getElementById("nombre").value,
+      matricula: document.getElementById("matricula").value,
+      carrera: document.getElementById("carrera").value,
+      semestre: document.getElementById("semestre").value
+    };
 
-  const datos = {
-    nombre: document.getElementById("nombre").value,
-    matricula: document.getElementById("matricula").value,
-    carrera: document.getElementById("carrera").value,
-    semestre: document.getElementById("semestre").value
-  };
-
-  fetch(URL, {
-    method: "POST",
-    mode: "no-cors",   // 🔥 evita error CORS
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(datos)
-  })
-  .then(() => {
-    document.getElementById("mensaje").innerHTML = "✅ Datos enviados correctamente";
-    document.getElementById("formulario").reset();
-  })
-  .catch(error => {
-    document.getElementById("mensaje").innerHTML = "❌ Error al enviar";
-    console.error(error);
+    fetch(URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(datos)
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.resultado === "ok") {
+        document.getElementById("mensaje").innerHTML = "✅ Datos guardados correctamente";
+        document.getElementById("formulario").reset();
+      } else {
+        document.getElementById("mensaje").innerHTML = "❌ Error: " + data.error;
+      }
+    })
+    .catch(error => {
+      document.getElementById("mensaje").innerHTML = "❌ Error de conexión";
+      console.error(error);
+    });
   });
-
-});
-
 </script>
 
 </body>
 </html>
-
