@@ -8,10 +8,10 @@
 
 <h2>Registro del Club</h2>
 
-<form id="form">
+<form id="formulario">
   <input type="text" id="nombre" placeholder="Nombre" required><br><br>
 
-  <input type="text" id="matricula" placeholder="Matrícula" pattern="[0-9]+" inputmode="numeric" required><br><br>
+  <input type="number" id="matricula" placeholder="Matrícula" required><br><br>
 
   <input type="text" id="carrera" placeholder="Carrera" required><br><br>
 
@@ -20,39 +20,42 @@
   <button type="submit">Enviar</button>
 </form>
 
+<p id="mensaje"></p>
+
 <script>
-  // Tu URL del Web App
-  const URL = "https://script.google.com/macros/s/AKfycbyIDJQzBAM_I8YAzxyfRcO2xWlENhCAvq7ySItyNS4wimnb117UAfQHffrjhLRi0z66/exec";
 
-  document.getElementById("form").addEventListener("submit", function(e) {
-    e.preventDefault();
+const URL = "https://script.google.com/macros/s/AKfycbxbs-Nquiwc6mXLQCyJVrVg_vn-x2yMKFmGSgFjft62qjvQhAZqLdY3EyhqvFJiHW8R/exec";
 
-    const datos = {
-      nombre: document.getElementById("nombre").value,
-      matricula: document.getElementById("matricula").value,
-      carrera: document.getElementById("carrera").value,
-      semestre: document.getElementById("semestre").value
-    };
+document.getElementById("formulario").addEventListener("submit", function(e) {
+  e.preventDefault();
 
-    fetch(URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(datos)
-    })
-    .then(response => response.text())
-    .then(data => {
-      alert("✅ Datos enviados correctamente");
-      document.getElementById("form").reset();
-    })
-    .catch(error => {
-      alert("❌ Error al enviar");
-      console.error(error);
-    });
+  const datos = {
+    nombre: document.getElementById("nombre").value,
+    matricula: document.getElementById("matricula").value,
+    carrera: document.getElementById("carrera").value,
+    semestre: document.getElementById("semestre").value
+  };
+
+  fetch(URL, {
+    method: "POST",
+    mode: "no-cors",   // 🔥 evita error CORS
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(datos)
+  })
+  .then(() => {
+    document.getElementById("mensaje").innerHTML = "✅ Datos enviados correctamente";
+    document.getElementById("formulario").reset();
+  })
+  .catch(error => {
+    document.getElementById("mensaje").innerHTML = "❌ Error al enviar";
+    console.error(error);
   });
+
+});
+
 </script>
 
 </body>
 </html>
-
