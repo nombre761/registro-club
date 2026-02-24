@@ -11,8 +11,7 @@
 <form id="form">
   <input type="text" id="nombre" placeholder="Nombre" required><br><br>
 
-  <input type="text" id="matricula" placeholder="Matrícula"
-  pattern="[0-9]+" inputmode="numeric" required><br><br>
+  <input type="text" id="matricula" placeholder="Matrícula" pattern="[0-9]+" inputmode="numeric" required><br><br>
 
   <input type="text" id="carrera" placeholder="Carrera" required><br><br>
 
@@ -22,19 +21,24 @@
 </form>
 
 <script>
-  const URL = "https://script.google.com/macros/s/AKfycbzK0j-oSRGHLj4xNKpWvDPiYXCe8Iog6qzsZS72I46qIgfPDGWI1zRu1mMAlHf5UqnL/exec";
+  // Pega aquí la URL de tu Web App de Google Apps Script
+  const URL = "https://script.google.com/macros/s/AKfycbzulbYUuZqRi_mnmm-F_28eUsc2DEwiBOecm1mSJ57Kj11vXdkHFO-ziQPN76Ne8iAb/exec";
 
   document.getElementById("form").addEventListener("submit", function(e) {
     e.preventDefault();
 
+    // Obtener los valores del formulario
+    const datos = {
+      nombre: document.getElementById("nombre").value,
+      matricula: document.getElementById("matricula").value,
+      carrera: document.getElementById("carrera").value,
+      semestre: document.getElementById("semestre").value
+    };
+
+    // Enviar los datos a Google Sheets usando fetch y JSON
     fetch(URL, {
       method: "POST",
-      body: JSON.stringify({
-        nombre: document.getElementById("nombre").value,
-        matricula: document.getElementById("matricula").value,
-        carrera: document.getElementById("carrera").value,
-        semestre: document.getElementById("semestre").value
-      })
+      body: JSON.stringify(datos)
     })
     .then(response => response.text())
     .then(data => {
