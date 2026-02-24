@@ -10,7 +10,7 @@
 
 <form id="form">
   <input type="text" id="nombre" placeholder="Nombre" required><br><br>
-  <input type="text" id="matricula" placeholder="Matrícula" required><br><br>
+ <input type="text" id="matricula" placeholder="Matrícula" pattern="[0-9]+" inputmode="numeric" required><br><br>
   <input type="text" id="carrera" placeholder="Carrera" required><br><br>
   <input type="text" id="semestre" placeholder="Semestre" required><br><br>
   <button type="submit">Enviar</button>
@@ -45,4 +45,5 @@
 </script>
 
 </body>
+
 </html>
